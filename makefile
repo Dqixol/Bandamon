@@ -1,4 +1,4 @@
-install:
+install-dev:
 	pip install -e .
 
 build:
@@ -11,4 +11,4 @@ clean:
 	rm -rf dist
 
 install-from-testpypi:
-	python3 -m pip install --index-url https://test.pypi.org/simple/ bandamon
+	python -m pip install --index-url https://test.pypi.org/simple/ --upgrade bandamon
