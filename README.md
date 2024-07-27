@@ -1,8 +1,9 @@
 # bandamon - (hopefully) a better pandamon :0
 
 ## installation
+```
 pip install --index-url https://test.pypi.org/simple/ bandamon
-
+```
 ## usage
 ```
 usage: bandamon [-h] [-e EXPRESSIONS [EXPRESSIONS ...]] [-v INVERSES [INVERSES ...]] [-u USER] [-d] [-l] [-s] [-a]
