@@ -257,7 +257,7 @@ def heavyLifting(user, expressions, inverses, do_details, past_list, show_done=F
     avg_age = sum([line['age'] for line in df_of_interest]) / len(df_of_interest)
     eta = (avg_age * 24 / (nfiles_done / nfiles_total)  - (avg_age * 24)) if nfiles_done > 0 else float('inf')
     nfiles_done_past_hour = (past_list[-1][1] - past_list[0][1])
-    time_past_hour = (past_list[-1][0] - past_list[0][0]) / 60
+    time_past_hour = (past_list[-1][0] - past_list[0][0]) / 60.0
     os.system('clear')
     n_col = os.get_terminal_size().columns
     n_line = os.get_terminal_size().lines
@@ -298,7 +298,7 @@ def heavyLifting(user, expressions, inverses, do_details, past_list, show_done=F
     print(f'\n')
     print (f'{bcolors.GREEN}INFO: Overall progress {nfiles_done} / {nfiles_total} ({round(100*(nfiles_done/nfiles_total), 2)}%) files, {nfiles_total-nfiles_done} left, elapse {round(avg_age * 24,1)} hours, eta {round(eta,1)} hours{bcolors.ENDC}')
     if nfiles_done_past_hour > 0:
-        ins_eta = (nfiles_total - nfiles_done) /  (time_past_hour / 60 / nfiles_done_past_hour)
+        ins_eta = (nfiles_total - nfiles_done) /  (nfiles_done_past_hour / time_past_hour * 60.0)
         print (f'{bcolors.GREEN}INFO: In the past {round(time_past_hour, 1)} mins, {nfiles_done_past_hour} files were processed, inst. eta {round(ins_eta,1)} hours')
     print (f'\n{bcolors.GREEN}INFO: Go to {bcolors.UNDERLINE}https://bigpanda.cern.ch/user/{bcolors.ENDC}{bcolors.GREEN} for more info{bcolors.ENDC}')
     now  = datetime.datetime.now()
