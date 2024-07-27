@@ -7,6 +7,7 @@ from urllib.request import urlopen
 import os
 import time
 import datetime
+import getpass
 
 cols_of_interest = [
     'jeditaskid',
@@ -223,13 +224,24 @@ def heavyLifting(user, expressions, inverses, do_details, past_list, show_done=F
         print(f'{bcolors.YELLOW}WARNING: No task found, sure you have task submitted?')
         exit()
     df_of_interest = []
+    if len(expressions) == 0:
+        expressions = ['']
     for line in df:
+        line_good = True
         for expression in expressions:
-            if expression in line['taskname']:
-                df_of_interest.append(line)
+            if expression not in line['taskname']:
+                line_good = False
+                break
+        df_of_interest.append(line) if line_good else None
+    df_of_interest_2 = []
+    for line in df_of_interest:
+        line_good = True
         for expression in inverses:
             if expression in line['taskname']:
-                df_of_interest.remove(line)
+                line_good = False
+                break
+        df_of_interest_2.append(line) if line_good else None
+    df_of_interest = df_of_interest_2
     if len(df_of_interest) == 0:
         print(f'{bcolors.YELLOW}WARNING: No task found, change your selection!')
         exit()
@@ -252,7 +264,8 @@ def heavyLifting(user, expressions, inverses, do_details, past_list, show_done=F
     print(f'status     id      elapsed/estimate      done / left / fail    (%)   name')
     print(f'-'*(n_col))
     if len(df_of_interest) > 0:
-        n_to_print = n_line - 16 - len(df_issue)
+        n_to_print = n_line - 16 - len(df_issue) 
+        n_to_print = 10 if n_to_print < 10 else n_to_print
         n_printed = 0
         if show_done:
             for line in df_of_interest:
@@ -303,7 +316,7 @@ def main():
     parser.add_argument("-s", '--show_done', help="show done jobs", action="store_true")
     parser.add_argument("-a", '--print_all', help="show all", action="store_true")
     args = parser.parse_args()
-    user = f'user.{os.getlogin()}' if not args.user else f'user.{args.user}'
+    user = f'user.{getpass.getuser()}' if not args.user else f'user.{args.user}'
     show_done = args.show_done if args.show_done else False
     a_list = []
     while True:
